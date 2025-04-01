@@ -191,7 +191,15 @@ class Logger: TextOutputStream {
     private let fileHandle: FileHandle
 
     init(url: URL) throws {
-        // more code to come
+        let fm = FileManager.default
+        let path = url.path()
+
+        if fm.fileExists(atPath: path) == false {
+            fm.createFile(atPath: path, contents: nil)
+        }
+
+        fileHandle = try FileHandle(forWritingTo: url)
+        try fileHandle.seekToEnd()
     }
 
     func write(_ string: String) {
@@ -203,16 +211,6 @@ class Logger: TextOutputStream {
         try? fileHandle.close()
     }
 }
-
-let fm = FileManager.default
-let path = url.path()
-
-if fm.fileExists(atPath: path) == false {
-    fm.createFile(atPath: path, contents: nil)
-}
-
-fileHandle = try FileHandle(forWritingTo: url)
-try fileHandle.seekToEnd()
 
 let url = URL.homeDirectory.appending(path: "output.log")
 var logger = try Logger(url: url)
