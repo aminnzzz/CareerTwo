@@ -215,3 +215,4 @@ class Logger: TextOutputStream {
 let url = URL.homeDirectory.appending(path: "output.log")
 var logger = try Logger(url: url)
 dump(roy, to: &logger, name: "Roy", maxDepth: 2, maxItems: 4)
+
