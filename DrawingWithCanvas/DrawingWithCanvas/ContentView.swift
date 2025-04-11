@@ -32,9 +32,20 @@ struct ContentView: View {
 
                 ctx.blendMode = .plusLighter
                 ctx.addFilter(.blur(radius: 10))
+
                 for particle in particleSystem.particles {
                     ctx.opacity = particle.deathDate - timelineDate
-                    ctx.fill(Circle().path(in: CGRect(x: particle.position.x - 16, y: particle.position.y - 16, width: 32, height: 32)), with: .color(.cyan))
+                    ctx.fill(
+                        Circle().path(
+                            in: CGRect(
+                                x: particle.position.x - 16,
+                                y: particle.position.y - 16,
+                                width: 32,
+                                height: 32
+                            )
+                        ),
+                        with: .color(.cyan)
+                    )
                 }
             }
         }
