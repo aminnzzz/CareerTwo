@@ -52,6 +52,7 @@ struct ContentView: View {
         config.allowsExpensiveNetworkAccess = false
         config.allowsConstrainedNetworkAccess = false
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.waitsForConnectivity = true
 
         let session = URLSession(configuration: config)
         let url = URL(string: "https://www.apple.com")!
