@@ -3,14 +3,31 @@ import Foundation
  why the naming format: to see which object is calling the delagate
  why the AnyObject: to use weak to avoid retain cycles
  */
+
+protocol ReminderPresenting: AnyObject {
+    func yearChanged(to year: Int)
+}
+
 protocol CalendarDelegate: AnyObject {
     func calendar(_ calendar: Calendar, willDisplay year: Int)
     func calendar(_ calendar: Calendar, didSelect date: Date)
     func calendarShouldChangeYear(_ calendar: Calendar) -> Bool
 }
 
-protocol ReminderPresenting: AnyObject {
-    func yearChanged(to year: Int)
+class RemindersCalendarDelegate: CalendarDelegate {
+    weak var parentController: (any ReminderPresenting)?
+
+    func calendarShouldChangeYear(_ calendar: Calendar) -> Bool {
+        true
+    }
+
+    func calendar(_ calendar: Calendar, willDisplay year: Int) {
+        parentController?.yearChanged(to: year)
+    }
+
+    func calendar(_ calendar: Calendar, didSelect date: Date) {
+        print("You selected \(date)")
+    }
 }
 
 class Calendar {
@@ -59,22 +76,6 @@ class RemindersCalendarDataSource: CalendarDataSource {
 
     func calendar(_ calendar: Calendar, add event: String, to date: Date) {
         print("You're going to \(event) on \(date).")
-    }
-}
-
-class RemindersCalendarDelegate: CalendarDelegate {
-    weak var parentController: (any ReminderPresenting)?
-
-    func calendarShouldChangeYear(_ calendar: Calendar) -> Bool {
-        true
-    }
-
-    func calendar(_ calendar: Calendar, willDisplay year: Int) {
-        parentController?.yearChanged(to: year)
-    }
-
-    func calendar(_ calendar: Calendar, didSelect date: Date) {
-        print("You selected \(date)")
     }
 }
 
